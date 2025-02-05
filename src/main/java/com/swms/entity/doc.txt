@@ -1,0 +1,92 @@
+To create a systemized wholesale market for dresses, where the process involves three parties—Shop 1 (wholesaler), Agent (distributor), and Small Shops (retailers)—we can break the solution into a low-level and high-level design.
+
+High-Level Design:
+At a high level, this system can be designed with three core components:
+
+Wholesaler Shop (Shop 1) – Where dresses are produced or bulk purchased.
+Agent – An intermediary who sells the products to small shops.
+Small Shops – Retailers that sell the dresses to the end consumer.
+This system involves tracking the movement of products from the wholesaler through the agent and into the small shops, ensuring the inventory, order status, and payments are well-managed at each stage.
+
+High-Level Components:
+
+Inventory Management: Each shop (wholesaler, agent, small shops) must have an inventory system to track available products, stock levels, and sales.
+Order Processing: A central system for managing orders placed by the agent for the small shops and those made by small shops directly.
+Payment and Invoicing: A payment gateway for each shop to make payments to the previous step in the supply chain.
+Reporting: Real-time reporting system to track orders, payments, and inventory.
+User Management & Roles: Different roles for each type of user (admin, wholesaler, agent, and small shop owner), with permissions on order creation, view, and reporting.
+High-Level Workflow:
+
+Wholesaler (Shop 1):
+
+List products for sale at wholesale prices.
+Maintain inventory data (sizes, colors, quantity).
+Process orders made by the agent.
+Track payments from agents.
+Agent:
+
+Browse products available from the wholesaler.
+Place bulk orders with the wholesaler on behalf of small shops.
+Manage payments and deliveries from wholesalers to small shops.
+Keep track of which small shop ordered what and when.
+Small Shops (Retailers):
+
+Place orders with agents.
+Browse a catalog of available products.
+Pay the agent for products.
+Track inventory and sales.
+Low-Level Design:
+At a lower level, we can dive into the specifics of how the system is implemented.
+
+Database Design:
+
+Tables/Entities:
+Products: product_id, name, category, size, color, wholesale_price, retail_price, stock_quantity
+Shops: shop_id, shop_name, type (wholesaler, agent, retailer), contact_info, address
+Orders: order_id, shop_id, product_id, quantity, price, order_status (pending, shipped, completed)
+Payments: payment_id, order_id, amount, payment_status (paid, pending), payment_date
+Inventory: product_id, shop_id, quantity_in_stock
+Functionality (for each user):
+
+Wholesaler:
+Add new products to inventory.
+List all products with prices and stock.
+Process incoming orders from agents.
+Manage payments from agents.
+Agent:
+View the list of products from wholesalers.
+Place orders for small shops.
+Track order status and payment for each small shop.
+Small Shops:
+Browse available products and prices.
+Place orders with agents.
+Receive orders and update inventory.
+Make payments and track transactions.
+APIs / Communication:
+
+Product Catalog API: Allows agents and small shops to view products available from wholesalers.
+Order API: Allows agents to place orders for small shops, and small shops can place orders with agents.
+Inventory API: Updates stock levels across shops as products are sold or ordered.
+Payment API: Handles payment transactions and updates order statuses (paid/unpaid).
+Reporting API: Allows different users to access reports on orders, payments, and inventory.
+User Interface:
+
+Wholesaler Dashboard:
+Product listing and stock management.
+Order management and payment tracking.
+Reports on sales and payments.
+Agent Dashboard:
+Order management interface for placing orders for small shops.
+View product availability and prices.
+Payment tracking for transactions with small shops.
+Small Shop Dashboard:
+Browse and order from agents.
+Track inventory and sales.
+Pay for orders and manage invoices.
+Workflow Example:
+
+Step 1: Wholesaler adds a product to the system with details (size, color, price, stock).
+Step 2: Agent views the product catalog and places an order for a small shop with specific quantities.
+Step 3: Agent completes the order, which is sent to the wholesaler for fulfillment.
+Step 4: Payment is made from the agent to the wholesaler.
+Step 5: Small Shop receives the product from the agent, updates its inventory, and proceeds with retail sales.

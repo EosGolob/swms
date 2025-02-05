@@ -1,0 +1,19 @@
+server:
+    port: 8001
+    
+spring:
+  application:
+    name: swms
+    
+  
+  
+  datasource:
+   url: jdbc:mysql://localhost:3306/whole_sale
+   username: root
+   password: root
+   driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true  
