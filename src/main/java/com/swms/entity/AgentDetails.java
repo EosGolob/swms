@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +38,7 @@ public class AgentDetails {
 	@Column(name = "contact_no")
 	private String contactNo;
 
-	@NotBlank
+	@NotNull
 	@OneToMany(mappedBy = "agent", cascade = CascadeType.ALL)
 	@Valid
 	private List<Address> agentAddress;

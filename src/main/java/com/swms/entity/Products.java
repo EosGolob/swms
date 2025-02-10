@@ -2,12 +2,15 @@ package com.swms.entity;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -55,4 +58,8 @@ public class Products {
 	@Column(name = "product_retail_price")
 	private float retail_price;
 	
+	/**
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderProduct> orderProducts;  
+    */
 }

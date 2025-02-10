@@ -1,8 +1,14 @@
 package com.swms.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +20,7 @@ import lombok.NoArgsConstructor;
 public class Orders {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long order_id;
 	
 	@Column(name = "Shop_gst_id")
@@ -28,6 +35,28 @@ public class Orders {
 	@Column(name = "price")
 	private float price;
 	
+	@Column(name = "paymentStatus")
+	private String paymentStatus;
+	
 	@Column(name = "order_status")
 	private String order_status;
+	
+	@Column(name = "order_date")
+	private LocalDateTime orderDate; 
+	
+	/**
+	@ManyToOne
+    @JoinColumn(name = "agent_id")
+    private AgentDetails agent;  // To store which agent the buyer came through
+   */
+    /**
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+	*/
+	
+    /**
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderProduct> orderProducts;  
+    */
 }
