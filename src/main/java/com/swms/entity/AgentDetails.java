@@ -15,11 +15,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "agent_details")
+
 public class AgentDetails {
 
 	@Id
@@ -43,4 +45,11 @@ public class AgentDetails {
 	@Valid
 	private List<Address> agentAddress;
 
+	@Override
+	public String toString() {
+		return "AgentDetails [id=" + id + ", name=" + name + ", email=" + email + ", contactNo=" + contactNo
+				+ ", agentAddress=" + agentAddress + "]";
+	}
+
+	
 }

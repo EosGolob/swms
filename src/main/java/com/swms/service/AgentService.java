@@ -6,5 +6,7 @@ import com.swms.entity.AgentDetails;
 public interface AgentService {
 
 	AgentDetails createAgentWithAddresses(AgentDetailsDTO agentDetailsDTO);
+	
+	AgentDetails getAgent(Long agentId);
 
 }

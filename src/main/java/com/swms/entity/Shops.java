@@ -25,7 +25,7 @@ public class Shops {
 	
 	@NotBlank(message = "Shop Gst no Required")
 	@Column(name = "shop_gst_id")
-	private String shop_gst_id;
+	private String shopGstId;
 	
 	@NotBlank(message = "Shop name Required")
 	@Column(name = "shop_name")

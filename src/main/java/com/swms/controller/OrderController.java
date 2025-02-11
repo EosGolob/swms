@@ -3,6 +3,7 @@ package com.swms.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.swms.dto.OrderDetailsRequestDto;
 import com.swms.dto.OrdersDTO;
 import com.swms.entity.OrderProduct;
 import com.swms.entity.Orders;
@@ -52,5 +53,14 @@ public class OrderController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
 	}
 	
+	 @PostMapping("/create")
+	    public ResponseEntity<?> createOrder(@RequestBody OrderDetailsRequestDto orderDetails) {
+	        Orders newOrder = orderServiceImpl.createOrder(orderDetails);
+	        if (newOrder != null) {
+	            return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	        }
+	  }
 
 }

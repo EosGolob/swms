@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,10 @@ public class Orders {
 	@Column(name = "Shop_gst_id")
 	private String shop_gst_id; 
 	
+	/**
 	@Column(name = "product_id")
 	private String product_id;
-	
+	*/
 	@Column(name = "quantity")
 	private Long quantity;
 	
@@ -44,11 +46,21 @@ public class Orders {
 	@Column(name = "order_date")
 	private LocalDateTime orderDate; 
 	
-	/**
+//	@Version
+//	private Long version;
+	@ManyToOne
+	@JoinColumn(name = "product_id", referencedColumnName = "product_id")  // Join with the product table
+	private Products product; 
+	
 	@ManyToOne
     @JoinColumn(name = "agent_id")
     private AgentDetails agent;  // To store which agent the buyer came through
-   */
+   
+	
+	@ManyToOne
+	@JoinColumn(name = "shop_id")
+	private Shops shop;
+	
     /**
     @ManyToOne
     @JoinColumn(name = "address_id")
