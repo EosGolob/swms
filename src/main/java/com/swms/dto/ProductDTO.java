@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductDTO {
 	
+	private Long productId;
 	
 	@NotBlank(message = "product Name is required")
 	private String name;

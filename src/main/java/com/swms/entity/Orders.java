@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,13 +23,9 @@ public class Orders {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long order_id;
 	
-	@Column(name = "Shop_gst_id")
-	private String shop_gst_id; 
+//	@Column(name = "Shop_gst_id")
+//	private String shop_gst_id; 
 	
-	/**
-	@Column(name = "product_id")
-	private String product_id;
-	*/
 	@Column(name = "quantity")
 	private Long quantity;
 	
@@ -46,8 +41,6 @@ public class Orders {
 	@Column(name = "order_date")
 	private LocalDateTime orderDate; 
 	
-//	@Version
-//	private Long version;
 	@ManyToOne
 	@JoinColumn(name = "product_id", referencedColumnName = "product_id")  // Join with the product table
 	private Products product; 
@@ -61,14 +54,4 @@ public class Orders {
 	@JoinColumn(name = "shop_id")
 	private Shops shop;
 	
-    /**
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
-	*/
-	
-    /**
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderProduct> orderProducts;  
-    */
 }

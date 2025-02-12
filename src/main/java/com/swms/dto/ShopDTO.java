@@ -30,5 +30,5 @@ public class ShopDTO {
 	
     @NotEmpty(message = "shop_address address is mandatory")
 	@Valid
-	private List<Address> shop_address;
+	private List<AddressDTO> shop_address;
 }

@@ -7,6 +7,6 @@ public interface AgentService {
 
 	AgentDetails createAgentWithAddresses(AgentDetailsDTO agentDetailsDTO);
 	
-	AgentDetails getAgent(Long agentId);
+//	AgentDetails getAgent(Long agentId);
 
 }

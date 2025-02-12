@@ -1,18 +1,5 @@
 package com.swms.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.swms.dto.OrderDetailsRequestDto;
-import com.swms.dto.OrdersDTO;
-import com.swms.entity.OrderProduct;
-import com.swms.entity.Orders;
-import com.swms.error.ErrorResponse;
-import com.swms.serviceImpl.OrderServiceImpl;
-
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +9,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.swms.dto.OrderRequestDTO;
+import com.swms.dto.OrdersDTO;
+import com.swms.entity.Orders;
+import com.swms.error.ErrorResponse;
+import com.swms.serviceImpl.OrderServiceImpl;
+
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
@@ -53,14 +51,10 @@ public class OrderController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
 	}
 	
-	 @PostMapping("/create")
-	    public ResponseEntity<?> createOrder(@RequestBody OrderDetailsRequestDto orderDetails) {
-	        Orders newOrder = orderServiceImpl.createOrder(orderDetails);
-	        if (newOrder != null) {
-	            return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
-	        } else {
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-	        }
-	  }
-
+	
+	@PostMapping
+    public ResponseEntity<?> createOrder(@RequestBody OrderRequestDTO orderRequest) {
+        Orders order = orderServiceImpl.createOrderRequest(orderRequest);
+        return ResponseEntity.ok(order);
+    }
 }

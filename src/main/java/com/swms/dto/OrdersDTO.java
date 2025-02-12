@@ -26,6 +26,5 @@ public class OrdersDTO {
 	private String order_status;
 	
 	private LocalDateTime orderDate; 
-
-//    private AgentDetails agent;  
+ 
 }

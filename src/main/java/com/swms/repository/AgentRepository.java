@@ -12,4 +12,10 @@ public interface AgentRepository extends JpaRepository<AgentDetails, Long> {
 	Optional<AgentDetails> findById(Long agentId);
 
 	Optional<AgentDetails> findByEmail(String email);
+
+	Optional<AgentDetails> findByContactNo(String contactNo);
+
+	Optional<AgentDetails> findByName(String name);
+
+	AgentDetails findByEmailAndContactNo(String agentEmail, String agentContact);
 }

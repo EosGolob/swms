@@ -9,26 +9,26 @@ import org.springframework.stereotype.Service;
 import com.swms.dto.AgentDetailsDTO;
 import com.swms.entity.Address;
 import com.swms.entity.AgentDetails;
+import com.swms.repository.AddressRepository;
 import com.swms.repository.AgentRepository;
 import com.swms.service.AgentService;
 
 import jakarta.transaction.Transactional;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class AgentServiceImpl implements AgentService {
 
 	private final AgentRepository agentRepository;
-
-//	private final AddressRepository addressRepository;
-//	AddressRepository addressRepository,
+    private final AddressRepository addressRepository;
 	private final ModelMapper modelMapper;
 
 	@Autowired
 	public AgentServiceImpl(AgentRepository agentRepository, 
-			ModelMapper modelMapper) {
+			ModelMapper modelMapper,AddressRepository addressRepository) {
 		super();
 		this.agentRepository = agentRepository;
-//		this.addressRepository = addressRepository;
+		this.addressRepository = addressRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -46,9 +46,5 @@ public class AgentServiceImpl implements AgentService {
 		return savedAgent;
 	}
 
-	
-	 @Override
-	 public AgentDetails getAgent(Long agentId) {
-	      return agentRepository.findById(agentId).orElse(null);
-	   }
+
 }
