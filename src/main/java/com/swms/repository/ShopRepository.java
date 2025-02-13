@@ -9,8 +9,5 @@ import com.swms.entity.Shops;
 
 public interface ShopRepository extends JpaRepository<Shops, Long> {
 
-	
 	Optional<Shops>  findByShopGstId(String gstId);
-
-//	Optional<Shops> findByGstId(String shopGstId);
 }

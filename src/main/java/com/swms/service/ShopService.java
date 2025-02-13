@@ -5,5 +5,7 @@ import com.swms.entity.Shops;
 
 public interface ShopService {
    
-	Shops CreateShopInformation(ShopDTO shopDTO);
+	Shops createShopInformation(ShopDTO shopDTO);
+
+	Shops checkShopDetailsPresentInDb(String gstId);
 }

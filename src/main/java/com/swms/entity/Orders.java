@@ -22,10 +22,7 @@ public class Orders {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long order_id;
-	
-//	@Column(name = "Shop_gst_id")
-//	private String shop_gst_id; 
-	
+		
 	@Column(name = "quantity")
 	private Long quantity;
 	
@@ -42,12 +39,12 @@ public class Orders {
 	private LocalDateTime orderDate; 
 	
 	@ManyToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "product_id")  // Join with the product table
+	@JoinColumn(name = "product_id", referencedColumnName = "product_id")
 	private Products product; 
 	
 	@ManyToOne
     @JoinColumn(name = "agent_id")
-    private AgentDetails agent;  // To store which agent the buyer came through
+    private AgentDetails agent;  
    
 	
 	@ManyToOne

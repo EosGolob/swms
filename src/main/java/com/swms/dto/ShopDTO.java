@@ -16,8 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ShopDTO {
 
+	private Long id;
+	
     @NotBlank(message = "Shop Gst no Required")
-	private String shop_gst_id;
+	private String shopGstId;
 	
     @NotBlank(message = "Shop name Required")
 	private String shop_name;

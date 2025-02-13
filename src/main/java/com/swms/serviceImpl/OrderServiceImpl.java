@@ -42,12 +42,12 @@ public class OrderServiceImpl implements OrderService {
 	private final ModelMapper modelMapper;
 
 	private final AgentServiceImpl agentService;
-	
-	 private final ShopServiceImpl shopService;
+
+	private final ShopServiceImpl shopService;
 
 	public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, AgentRepository agentRepository,
 			ShopRepository shopRepository, AddressRepository addressRepository, ProductRepository productRepository,
-			AgentServiceImpl agentService,ShopServiceImpl shopService) {
+			AgentServiceImpl agentService, ShopServiceImpl shopService) {
 		super();
 		this.orderRepository = orderRepository;
 		this.modelMapper = modelMapper;
@@ -69,61 +69,52 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Orders createOrderRequest(OrderRequestDTO orderRequest) {
+		Shops shop = null;
+		// Check if shop details are provided
+		if (orderRequest.getGstId() != null && !orderRequest.getGstId().isEmpty()) {
+	        // Check if shop exists with the given gstId
+	        Shops existingShop = shopService.checkShopDetailsPresentInDb(orderRequest.getGstId());
+	        
+	        if (existingShop != null) {
+	            // If shop exists, set the shop from the database
+	            shop = existingShop;
+	        } else {
+	            // If shop doesn't exist, proceed with shop creation (as before)
+	            shop = shopService.createShopInformation(orderRequest.getShopDetails());
+	        }
+	    } else {
+	        // If no gstId is provided, create a new shop (as before)
+	        shop = shopService.createShopInformation(orderRequest.getShopDetails());
+	    }
+		// Find agent details if provided
+		AgentDetails agent = null;
+		if (orderRequest.getAgentEmail() != null && orderRequest.getAgentContact() != null) {
+			agent = agentRepository.findByEmailAndContactNo(orderRequest.getAgentEmail(),
+					orderRequest.getAgentContact());
+		}
 
-		  Shops shop = shopRepository.findByShopGstId(orderRequest.getShopGstId())
-		            .orElseGet(() -> {
-		                // If shop does not exist, prompt for shop details
-		                ShopDTO shopDetails = orderRequest.getShopDetails();
-		                if (shopDetails == null) {
-		                    throw new RuntimeException("Shop details are required since the shop does not exist.");
-		                }
-		                return createShop(shopDetails);
-		            });
-        // Find agent details if provided
-        AgentDetails agent = null;
-        if (orderRequest.getAgentEmail() != null && orderRequest.getAgentContact() != null) {
-            agent = agentRepository.findByEmailAndContactNo(orderRequest.getAgentEmail(), orderRequest.getAgentContact());
-        }
+		// Find the product and reduce its quantity
+		Products product = productRepository.findById(orderRequest.getProductId())
+				.orElseThrow(() -> new RuntimeException("Product not found"));
 
-        // Find the product and reduce its quantity
-        Products product = productRepository.findById(orderRequest.getProductId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        
-        if (product.getQuantity() < orderRequest.getQuantity()) {
-            throw new RuntimeException("Insufficient product quantity");
-        }
-        
-        product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
-        productRepository.save(product);
+		if (product.getQuantity() < orderRequest.getQuantity()) {
+			throw new RuntimeException("Insufficient product quantity");
+		}
 
-        // Create the order
-        Orders order = new Orders();
-        order.setQuantity(orderRequest.getQuantity());
-        order.setPrice(orderRequest.getPrice());
-        order.setPaymentStatus(orderRequest.getPaymentStatus());
-        order.setOrder_status("Pending");
-        order.setOrderDate(LocalDateTime.now());
-        order.setProduct(product);
-        order.setShop(shop);
-        order.setAgent(agent);
+		product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
+		productRepository.save(product);
 
-        return orderRepository.save(order);
-    }
+		// Create the order
+		Orders order = new Orders();
+		order.setQuantity(orderRequest.getQuantity());
+		order.setPrice(orderRequest.getPrice());
+		order.setPaymentStatus(orderRequest.getPaymentStatus());
+		order.setOrder_status(orderRequest.getOrder_status());
+		order.setOrderDate(LocalDateTime.now());
+		order.setProduct(product);
+		order.setShop(shop);
+		order.setAgent(agent);
 
-	private Shops createShop(ShopDTO shopDetails) {
-	    Shops newShop = new Shops();
-	    newShop.setShop_name(shopDetails.getShop_name());
-	    newShop.setShopGstId(shopDetails.getShop_gst_id());
-	    newShop.setType(shopDetails.getType());
-	    newShop.setContact_info(shopDetails.getContact_info());
-
-	    // Convert the list of AddressDTO to a list of Address entities
-	    List<Address> addresses = shopDetails.getShop_address().stream()
-	            .map(addressDTO -> modelMapper.map(addressDTO, Address.class))
-	            .collect(Collectors.toList());
-
-	    newShop.setShop_address(addresses); // Assuming shop_address is a List<Address>
-
-	    return shopRepository.save(newShop);
+		return orderRepository.save(order);
 	}
 }

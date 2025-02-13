@@ -1,6 +1,7 @@
 package com.swms.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ShopServiceImpl implements ShopService {
 
 
 	@Override
-	public Shops CreateShopInformation(ShopDTO shopDTO) {
+	public Shops createShopInformation(ShopDTO shopDTO) {
 		Shops shopDetails = modelMapper.map(shopDTO, Shops.class);
 		List<Address> shopAddress = shopDTO.getShop_address().stream()
 				.map(shopsDTO ->{
@@ -45,6 +46,14 @@ public class ShopServiceImpl implements ShopService {
 		shopDetails.setShop_address(shopAddress);
 		Shops saveShopes = shopRepository.save(shopDetails);	
 		return saveShopes;
+	}
+
+
+    @Override
+	public Shops checkShopDetailsPresentInDb(String gstId) {
+	
+    	Optional<Shops> shopOptional = shopRepository.findByShopGstId(gstId);
+		return shopOptional.orElse(null);
 	}
 
 
