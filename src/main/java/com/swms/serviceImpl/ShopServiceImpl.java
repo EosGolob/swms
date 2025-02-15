@@ -52,7 +52,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
 	public Shops checkShopDetailsPresentInDb(String gstId) {
 	
-    	Optional<Shops> shopOptional = shopRepository.findByShopGstId(gstId);
+    	Optional<Shops> shopOptional = shopRepository.findShopWithAddressByGstId(gstId);
 		return shopOptional.orElse(null);
 	}
 

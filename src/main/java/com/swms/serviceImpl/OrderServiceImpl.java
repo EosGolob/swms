@@ -1,6 +1,7 @@
 package com.swms.serviceImpl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.swms.dto.AddressDTO;
 import com.swms.dto.OrderRequestDTO;
 import com.swms.dto.OrdersDTO;
+import com.swms.dto.ProductOrderDTO;
 import com.swms.dto.ShopDTO;
 import com.swms.entity.Address;
 import com.swms.entity.AgentDetails;
@@ -68,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Orders createOrderRequest(OrderRequestDTO orderRequest) {
+	public List<Orders> createOrderRequest(OrderRequestDTO orderRequest) {
 		Shops shop = null;
 		// Check if shop details are provided
 		if (orderRequest.getGstId() != null && !orderRequest.getGstId().isEmpty()) {
@@ -93,21 +95,31 @@ public class OrderServiceImpl implements OrderService {
 					orderRequest.getAgentContact());
 		}
 
+		
+		List<Orders> ordersList = new ArrayList();
 		// Find the product and reduce its quantity
-		Products product = productRepository.findById(orderRequest.getProductId())
-				.orElseThrow(() -> new RuntimeException("Product not found"));
+//		Products product = productRepository.findById(productOrder.getProductId())
+//				.orElseThrow(() -> new RuntimeException("Product not found"));
+//
+//		if (product.getQuantity() <  productOrder.getQuantity()) {
+//			throw new RuntimeException("Insufficient product quantity");
+//		}
+		for (ProductOrderDTO productOrder : orderRequest.getProducts()) {
+	        // Find the product and check its availability
+	        Products product = productRepository.findById(productOrder.getProductId())
+	                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-		if (product.getQuantity() < orderRequest.getQuantity()) {
-			throw new RuntimeException("Insufficient product quantity");
-		}
+	        if (product.getQuantity() < productOrder.getQuantity()) {
+	            throw new RuntimeException("Insufficient product quantity for product ID: " + productOrder.getProductId());
+	        }
 
-		product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
+		product.setQuantity(product.getQuantity() -  productOrder.getQuantity());
 		productRepository.save(product);
 
 		// Create the order
 		Orders order = new Orders();
-		order.setQuantity(orderRequest.getQuantity());
-		order.setPrice(orderRequest.getPrice());
+		order.setQuantity(productOrder.getQuantity());
+		order.setPrice(productOrder.getPrice());
 		order.setPaymentStatus(orderRequest.getPaymentStatus());
 		order.setOrder_status(orderRequest.getOrder_status());
 		order.setOrderDate(LocalDateTime.now());
@@ -115,6 +127,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setShop(shop);
 		order.setAgent(agent);
 
-		return orderRepository.save(order);
+		 ordersList.add(order);
+		}
+		return orderRepository.saveAll(ordersList);
 	}
 }

@@ -64,6 +64,7 @@ public class ShopsController {
 			response.put("shopName", shops.getShop_name());
 			response.put("contactInfo",shops.getContact_info());
 			response.put("type",shops.getType());
+			response.put("shop_address", shops.getShop_address());
 			return ResponseEntity.ok(response);
 		} else {
 			response.put("exists", false);
